@@ -1,11 +1,57 @@
 # Importando a biblioteca e nomeando de tk
 import tkinter as tk
+import random
+import string
+
 ALTURA = "450"
 LARGURA = "400"
 
-def acao_clique():
-    print("O botão foi clicado!")
+#==================================
+# 7. Funções do Sistema (A Lógica)
+#==================================
 
+def gerar_senha():
+    try:
+        tamanho = int(entry_tamanho_senha.get())
+        # Verificando se a quantidade de caracteres definida é menor do que 4 
+        if tamanho < 4:
+            lbl_resultado.config(
+                text="Erro: Mínimo de 4 caracteres!",
+                fg="#ff5555"
+            )
+            return
+        
+        caracteres = ""
+        if var_maiusculas.get():
+            caracteres += string.ascii_uppercase
+        if var_minusculas.get():
+            caracteres += string.ascii_lowercase
+        if var_numeros.get():
+            caracteres += string.digits
+        if var_simbolos.get():
+            caracteres += string.punctuation
+        
+        if not caracteres:
+            lbl_resultado.config(
+                text = "Erro: Selecione ao menos uma opção!",
+                fg = "#ff5555"
+            )
+            return
+
+        senha = "".join(random.choice(caracteres) for i in range(tamanho))
+
+        lbl_resultado.config(
+            text= f"Senha: {senha}",
+            fg= "#50fa7b"
+       )
+
+    
+
+    except ValueError:
+        lbl_resultado.config(
+            text = "Erro: Digite um número válido!",
+            fg = "#ff5555"
+            )
 
 #===================================
 #1. Configuração da Janela Principal
@@ -97,5 +143,27 @@ chk_simbolo = tk.Checkbutton(
     activeforeground="#cccccc"
 )
 chk_simbolo.pack(anchor="w", padx=60,pady=2)
+
+# 6. Criar botão gerador de senha 
+btn_gerar = tk.Button(
+    janela,
+    text="Gerar senha segura",
+    command=gerar_senha,
+    bg="#0c2e02",
+    fg="#cccccc",
+    padx=10,
+    pady=5
+)
+btn_gerar.pack(pady=15)
+
+# Label que apresenta o resultado no programa
+lbl_resultado = tk.Label(
+    janela,
+    text="A senha aparecerá aqui",
+    font=("Arial",11,"bold"),
+    bg="#295764",
+    fg="#cccccc" 
+)
+lbl_resultado.pack(pady=5)
 
 janela.mainloop()
