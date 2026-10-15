@@ -53,6 +53,20 @@ def gerar_senha():
             fg = "#ff5555"
             )
 
+def copiar_senha():
+    texto_resultado = lbl_resultado.cget("text")
+
+    if "Senha: " in texto_resultado:
+        senha_pura = texto_resultado.replace("Senha: ","")
+
+        janela.clipboard_clear()
+        janela.clipboard_append(senha_pura)
+    else:
+        lbl_status_copia.config(
+            text ="É necessário gerar uma senha primeiro!",
+            fg = "#ff5555" 
+        )
+
 #===================================
 #1. Configuração da Janela Principal
 #===================================
@@ -165,5 +179,26 @@ lbl_resultado = tk.Label(
     fg="#cccccc" 
 )
 lbl_resultado.pack(pady=5)
+
+btn_copiar = tk.Button(
+    janela,
+    text = "Copiar",
+    command=copiar_senha,
+    font=("Arial",10,"bold"),
+    bg="#bbb1b1",
+    fg="#cccccc",
+    padx= 10,
+    pady= 3
+)
+btn_copiar.pack(pady=5)
+
+lbl_status_copia = tk.Label(
+    janela,
+    text="",
+    font=("Arial,9"),
+    bg="#295764",
+    fg="#cccccc"    
+)
+lbl_status_copia.pack(pady=2)
 
 janela.mainloop()
